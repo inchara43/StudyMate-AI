@@ -4,79 +4,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyMate AI</title>
+    <title>StudyMate AI | Smart Study Planner</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app">
+    <div class="app-container">
         <aside class="sidebar">
-            <h2>StudyMate <span>AI</span></h2>
-            <p class="menu-title">MENU</p>
-            <button class="nav active" data-page="dashboard">🏠 Dashboard</button>
-            <button class="nav" data-page="planner">📅 Study Planner</button>
-            <button class="nav" data-page="chatbot">🤖 AI Study Chat</button>
-            <button class="nav" data-page="notes">📝 Notes Summarizer</button>
-            <button class="nav" data-page="quiz">🧠 Quiz Generator</button>
-            <button class="nav" data-page="progress">📊 My Progress</button>
-            <button class="nav" data-page="reminders">🔔 Reminders</button>
+            <h2 class="logo">📚 StudyMate AI</h2>
+
+            <nav class="sidebar-nav">
+                <button class="nav active" data-page="dashboard">🏠 Dashboard</button>
+                <button class="nav" data-page="planner">📅 Study Planner</button>
+                <button class="nav" data-page="chatbot">🤖 AI Study Chat</button>
+                <button class="nav" data-page="notes">📝 Notes Summarizer</button>
+                <button class="nav" data-page="quiz">🧠 Quiz Generator</button>
+                <button class="nav" data-page="progress">📊 My Progress</button>
+                <button class="nav" data-page="reminders">🔔 Reminders</button>
+            </nav>
         </aside>
 
-        <main class="main">
-            <header>
+        <main class="main-content">
+            <header class="topbar">
                 <div>
-                    <p class="muted">YOUR PERSONAL LEARNING SPACE</p>
                     <h1 id="page-title">Good to see you! 👋</h1>
-                    <p class="muted">Make today a productive learning day.</p>
+                    <p>Plan your learning, stay organized, and achieve your goals.</p>
                 </div>
-                <div class="avatar">S</div>
             </header>
 
-            <section class="welcome">
+            <section class="welcome-panel">
                 <div>
-                    <p>YOUR AI STUDY COMPANION</p>
-                    <h2>Learn smarter, not harder.</h2>
-                    <p>Plan your day, understand concepts, and track your progress.</p>
-                    <button id="start-btn" class="primary">Start studying →</button>
+                    <p class="welcome-label">YOUR PERSONAL STUDY ASSISTANT</p>
+                    <h2>Welcome to StudyMate AI!</h2>
+                    <p>Make every study session count. One task at a time.</p>
                 </div>
-                <div class="welcome-icon">📚</div>
+                <div class="welcome-icon">🎓</div>
             </section>
 
-            <h2 class="section-title">Your Overview</h2>
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-icon purple">📚</div>
+                    <h3>Total Tasks</h3>
+                    <p id="total-tasks">0</p>
+                </article>
 
-            <section class="stats">
-                <article class="card">
-                    <span>📚</span>
-                    <p>Total Tasks</p>
-                    <h2 id="total-tasks">0</h2>
+                <article class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <h3>Completed Tasks</h3>
+                    <p id="completed-tasks">0</p>
                 </article>
-                <article class="card">
-                    <span>✅</span>
-                    <p>Completed Tasks</p>
-                    <h2 id="completed-tasks">0</h2>
-                </article>
-                <article class="card">
-                    <span>🎯</span>
-                    <p>Completion Rate</p>
-                    <h2 id="completion-rate">0%</h2>
+
+                <article class="stat-card">
+                    <div class="stat-icon orange">📈</div>
+                    <h3>Completion Rate</h3>
+                    <p id="completion-rate">0%</p>
                 </article>
             </section>
 
             <section class="bottom-grid">
-                <article class="panel">
-                    <h2>Today's Study Tasks</h2>
+                <article class="panel" id="planner-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Today's Study Tasks</h2>
+                            <p class="panel-subtitle">Organize your learning schedule</p>
+                        </div>
+                        <span class="heading-icon">📝</span>
+                    </div>
+
+                    <form id="task-form" class="task-form">
+                        <div class="form-group">
+                            <label for="task-title">Task Name <span>*</span></label>
+                            <input
+                                type="text"
+                                id="task-title"
+                                placeholder="e.g. Complete Python assignment"
+                                maxlength="150"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task-subject">Subject</label>
+                            <input
+                                type="text"
+                                id="task-subject"
+                                placeholder="e.g. Python Programming"
+                                maxlength="80"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task-due-date">Due Date</label>
+                            <input type="date" id="task-due-date">
+                        </div>
+
+                        <button type="submit" id="add-task-btn" class="primary-button">
+                            <span>＋</span> Add Task
+                        </button>
+
+                        <p id="form-message" aria-live="polite"></p>
+                    </form>
+
+                    <div class="task-list-heading">
+                        <h3>Your Task List</h3>
+                        <span id="task-count-label">0 tasks</span>
+                    </div>
+
                     <div id="task-list">
                         <p class="empty">No tasks yet. Add your first task!</p>
                     </div>
                 </article>
 
                 <article class="panel">
-                    <h2>Quick Actions</h2>
-                    <button class="action" data-page="planner">➕ Add a study task</button>
-                    <button class="action" data-page="chatbot">🤖 Ask AI a question</button>
-                    <button class="action" data-page="notes">📝 Summarize notes</button>
-                    <button class="action" data-page="quiz">🧠 Generate a quiz</button>
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Quick Actions</h2>
+                            <p class="panel-subtitle">Your study tools in one place</p>
+                        </div>
+                        <span class="heading-icon">⚡</span>
+                    </div>
+
+                    <div class="quick-actions">
+                        <button class="quick-action" data-page="planner">
+                            <span class="quick-icon purple">📅</span>
+                            <span class="quick-text">
+                                <strong>Add a study task</strong>
+                                <small>Plan your next task</small>
+                            </span>
+                            <span class="arrow">›</span>
+                        </button>
+
+                        <button class="quick-action" data-page="chatbot">
+                            <span class="quick-icon blue">🤖</span>
+                            <span class="quick-text">
+                                <strong>Ask AI a question</strong>
+                                <small>Get help with studying</small>
+                            </span>
+                            <span class="arrow">›</span>
+                        </button>
+
+                        <button class="quick-action" data-page="notes">
+                            <span class="quick-icon orange">📝</span>
+                            <span class="quick-text">
+                                <strong>Summarize notes</strong>
+                                <small>Review key concepts</small>
+                            </span>
+                            <span class="arrow">›</span>
+                        </button>
+
+                        <button class="quick-action" data-page="quiz">
+                            <span class="quick-icon green">🧠</span>
+                            <span class="quick-text">
+                                <strong>Generate a quiz</strong>
+                                <small>Practice what you learn</small>
+                            </span>
+                            <span class="arrow">›</span>
+                        </button>
+                    </div>
+
+                    <div class="tip-card">
+                        <span>💡</span>
+                        <div>
+                            <h3>Study tip</h3>
+                            <p>Break big assignments into smaller tasks. Small steps make progress easier to track.</p>
+                        </div>
+                    </div>
                 </article>
             </section>
+
+            <footer class="footer">
+                <p>StudyMate AI · Learn smarter, one task at a time ✨</p>
+            </footer>
         </main>
     </div>
 

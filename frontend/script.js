@@ -1,22 +1,82 @@
 
-const navButtons = document.querySelectorAll("[data-page]");
+"use strict";
+
+// ===== 1. Get HTML Elements =====
 const pageTitle = document.getElementById("page-title");
+const taskForm = document.getElementById("task-form");
+const taskTitle = document.getElementById("task-title");
+const taskSubject = document.getElementById("task-subject");
+const taskDueDate = document.getElementById("task-due-date");
 const taskList = document.getElementById("task-list");
+const formMessage = document.getElementById("form-message");
+const addTaskButton = document.getElementById("add-task-btn");
 
-let tasks = JSON.parse(localStorage.getItem("studyTasks") || "[]");
+const navButtons = document.querySelectorAll(".nav[data-page]");
+const pageButtons = document.querySelectorAll("[data-page]");
 
+// ===== 2. Load Saved Tasks =====
+let tasks = [];
+
+try {
+    const savedTasks = JSON.parse(
+        localStorage.getItem("studyTasks") || "[]"
+    );
+
+    if (Array.isArray(savedTasks)) {
+        tasks = savedTasks.filter(task =>
+            task &&
+            typeof task.title === "string"
+        ).map(task => ({
+            title: task.title,
+            subject: typeof task.subject === "string" ? task.subject : "",
+            dueDate: typeof task.dueDate === "string" ? task.dueDate : "",
+            done: Boolean(task.done)
+        }));
+    }
+} catch (error) {
+    console.error("Could not load saved tasks:", error);
+}
+
+// ===== 3. Display Messages =====
+function showMessage(message, type = "success") {
+    formMessage.textContent = message;
+    formMessage.className = type;
+}
+
+// ===== 4. Update Statistics =====
+function updateStatistics() {
+    const completed = tasks.filter(task => task.done).length;
+
+    document.getElementById("total-tasks").textContent = tasks.length;
+    document.getElementById("completed-tasks").textContent = completed;
+
+    const percentage = tasks.length
+        ? Math.round((completed / tasks.length) * 100)
+        : 0;
+
+    document.getElementById("completion-rate").textContent =
+        percentage + "%";
+
+    document.getElementById("task-count-label").textContent =
+        tasks.length + (tasks.length === 1 ? " task" : " tasks");
+}
+
+// ===== 5. Render Task List =====
 function renderTasks() {
     taskList.innerHTML = "";
 
     if (tasks.length === 0) {
-        taskList.innerHTML =
-            '<p class="empty">No tasks yet. Add your first task!</p>';
+        const emptyMessage = document.createElement("p");
+        emptyMessage.className = "empty";
+        emptyMessage.textContent = "No tasks yet. Add your first task!";
+        taskList.appendChild(emptyMessage);
     }
 
     tasks.forEach((task, index) => {
         const row = document.createElement("div");
         row.className = "task-row" + (task.done ? " done" : "");
 
+        // Checkbox
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = task.done;
@@ -24,15 +84,23 @@ function renderTasks() {
 
         checkbox.addEventListener("change", () => {
             tasks[index].done = checkbox.checked;
-            saveTasks();
+
+            if (saveTasks()) {
+                showMessage(
+                    checkbox.checked
+                        ? "Task marked as completed!"
+                        : "Task marked as incomplete.",
+                    "success"
+                );
+            }
         });
 
+        // Task information
         const details = document.createElement("div");
         details.className = "task-details";
 
         const label = document.createElement("label");
         label.textContent = task.title;
-
         details.appendChild(label);
 
         if (task.subject) {
@@ -47,64 +115,105 @@ function renderTasks() {
             details.appendChild(date);
         }
 
-        const remove = document.createElement("button");
-        remove.className = "delete-btn";
-        remove.textContent = "Delete";
+        // Delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-btn";
+        deleteButton.textContent = "Delete";
+        deleteButton.setAttribute("aria-label", "Delete " + task.title);
 
-        remove.addEventListener("click", () => {
-            tasks.splice(index, 1);
-            saveTasks();
+        deleteButton.addEventListener("click", () => {
+            const removedTask = tasks.splice(index, 1)[0];
+
+            if (!saveTasks()) {
+                tasks.splice(index, 0, removedTask);
+                renderTasks();
+                return;
+            }
+
+            showMessage("Task deleted successfully.", "success");
         });
 
-        row.append(checkbox, details, remove);
+        row.append(checkbox, details, deleteButton);
         taskList.appendChild(row);
     });
 
-    const completed = tasks.filter(task => task.done).length;
-
-    document.getElementById("total-tasks").textContent = tasks.length;
-    document.getElementById("completed-tasks").textContent = completed;
-
-    document.getElementById("completion-rate").textContent =
-        tasks.length
-            ? Math.round(completed / tasks.length * 100) + "%"
-            : "0%";
+    updateStatistics();
 }
 
+// ===== 6. Save Tasks =====
 function saveTasks() {
-    localStorage.setItem("studyTasks", JSON.stringify(tasks));
-    renderTasks();
+    try {
+        localStorage.setItem("studyTasks", JSON.stringify(tasks));
+        renderTasks();
+        return true;
+    } catch (error) {
+        console.error("Could not save tasks:", error);
+        showMessage(
+            "Could not save tasks. Check your browser storage settings.",
+            "error"
+        );
+        return false;
+    }
 }
 
-function addTask() {
-    const title = prompt("Enter your study task:");
+// ===== 7. Add a New Task =====
+taskForm.addEventListener("submit", event => {
+    event.preventDefault();
 
-    if (!title || !title.trim()) {
+    const title = taskTitle.value.trim();
+    const subject = taskSubject.value.trim();
+    const dueDate = taskDueDate.value;
+
+    if (!title) {
+        showMessage("Please enter a task name.", "error");
+        taskTitle.focus();
         return;
     }
 
-    const subject = prompt("Enter the subject name:");
+    // Do not allow past due dates
+    if (dueDate) {
+        const selectedDate = new Date(dueDate + "T00:00:00");
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-    if (subject === null) {
-        return;
+        if (
+            Number.isNaN(selectedDate.getTime()) ||
+            selectedDate < today
+        ) {
+            showMessage(
+                "Please choose today or a future due date.",
+                "error"
+            );
+            taskDueDate.focus();
+            return;
+        }
     }
 
-    const dueDate = prompt("Enter the due date (YYYY-MM-DD), or leave blank:");
-
-    if (dueDate === null) {
-        return;
-    }
-
-    tasks.push({
-        title: title.trim(),
-        subject: subject.trim(),
-        dueDate: dueDate.trim(),
+    const newTask = {
+        title: title,
+        subject: subject,
+        dueDate: dueDate,
         done: false
-    });
+    };
 
-    saveTasks();
-}
+    tasks.push(newTask);
+    addTaskButton.disabled = true;
 
+    if (!saveTasks()) {
+        tasks.pop();
+        renderTasks();
+        addTaskButton.disabled = false;
+        return;
+    }
+
+    taskForm.reset();
+    showMessage("Task added successfully!", "success");
+    addTaskButton.disabled = false;
+    taskTitle.focus();
+});
+
+// ===== 8. Sidebar Navigation =====
 function openPage(page) {
     const titles = {
         dashboard: "Good to see you! 👋",
@@ -118,25 +227,42 @@ function openPage(page) {
 
     pageTitle.textContent = titles[page] || titles.dashboard;
 
-    document.querySelectorAll(".nav").forEach(button => {
+    navButtons.forEach(button => {
         button.classList.toggle("active", button.dataset.page === page);
     });
 
     if (page === "planner") {
-        addTask();
+        document.getElementById("planner-panel").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        taskTitle.focus({ preventScroll: true });
     } else if (page !== "dashboard") {
-        alert("This feature will be developed in our next steps!");
+        alert(
+            titles[page] +
+            " is not implemented yet. We'll build this feature next!"
+        );
     }
 }
 
-navButtons.forEach(button => {
+pageButtons.forEach(button => {
     button.addEventListener("click", () => {
         openPage(button.dataset.page);
     });
 });
 
-document.getElementById("start-btn").addEventListener("click", () => {
-    addTask();
-});
+// ===== 9. Initial Setup =====
+function initializeApp() {
+    // Set today's date as the earliest selectable due date
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-renderTasks();
+    taskDueDate.min = `${year}-${month}-${day}`;
+
+    renderTasks();
+}
+
+initializeApp();
