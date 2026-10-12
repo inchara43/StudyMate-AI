@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMate AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <h2>StudyMate <span>AI</span></h2>
+            <p class="menu-title">MENU</p>
+            <button class="nav active" data-page="dashboard">🏠 Dashboard</button>
+            <button class="nav" data-page="planner">📅 Study Planner</button>
+            <button class="nav" data-page="chatbot">🤖 AI Study Chat</button>
+            <button class="nav" data-page="notes">📝 Notes Summarizer</button>
+            <button class="nav" data-page="quiz">🧠 Quiz Generator</button>
+            <button class="nav" data-page="progress">📊 My Progress</button>
+            <button class="nav" data-page="reminders">🔔 Reminders</button>
+        </aside>
+
+        <main class="main">
+            <header>
+                <div>
+                    <p class="muted">YOUR PERSONAL LEARNING SPACE</p>
+                    <h1 id="page-title">Good to see you! 👋</h1>
+                    <p class="muted">Make today a productive learning day.</p>
+                </div>
+                <div class="avatar">S</div>
+            </header>
+
+            <section class="welcome">
+                <div>
+                    <p>YOUR AI STUDY COMPANION</p>
+                    <h2>Learn smarter, not harder.</h2>
+                    <p>Plan your day, understand concepts, and track your progress.</p>
+                    <button id="start-btn" class="primary">Start studying →</button>
+                </div>
+                <div class="welcome-icon">📚</div>
+            </section>
+
+            <h2 class="section-title">Your Overview</h2>
+
+            <section class="stats">
+                <article class="card">
+                    <span>📚</span>
+                    <p>Total Tasks</p>
+                    <h2 id="total-tasks">0</h2>
+                </article>
+                <article class="card">
+                    <span>✅</span>
+                    <p>Completed Tasks</p>
+                    <h2 id="completed-tasks">0</h2>
+                </article>
+                <article class="card">
+                    <span>🎯</span>
+                    <p>Completion Rate</p>
+                    <h2 id="completion-rate">0%</h2>
+                </article>
+            </section>
+
+            <section class="bottom-grid">
+                <article class="panel">
+                    <h2>Today's Study Tasks</h2>
+                    <div id="task-list">
+                        <p class="empty">No tasks yet. Add your first task!</p>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <h2>Quick Actions</h2>
+                    <button class="action" data-page="planner">➕ Add a study task</button>
+                    <button class="action" data-page="chatbot">🤖 Ask AI a question</button>
+                    <button class="action" data-page="notes">📝 Summarize notes</button>
+                    <button class="action" data-page="quiz">🧠 Generate a quiz</button>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
