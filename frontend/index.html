@@ -4,179 +4,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyMate AI | Smart Study Planner</title>
+    <meta name="theme-color" content="#6c4be8">
+    <title>StudyMate AI - Smart Study Assistant</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <aside class="sidebar">
-            <h2 class="logo">📚 StudyMate AI</h2>
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">🎓</span>
+            <h2>StudyMate AI</h2>
+        </div>
 
-            <nav class="sidebar-nav">
-                <button class="nav active" data-page="dashboard">🏠 Dashboard</button>
-                <button class="nav" data-page="planner">📅 Study Planner</button>
-                <button class="nav" data-page="chatbot">🤖 AI Study Chat</button>
-                <button class="nav" data-page="notes">📝 Notes Summarizer</button>
-                <button class="nav" data-page="quiz">🧠 Quiz Generator</button>
-                <button class="nav" data-page="progress">📊 My Progress</button>
-                <button class="nav" data-page="reminders">🔔 Reminders</button>
-            </nav>
-        </aside>
+        <nav class="navigation" aria-label="Main navigation">
+            <button class="nav-link active" data-page="dashboard">🏠 Dashboard</button>
+            <button class="nav-link" data-page="planner">📅 Study Planner</button>
+            <button class="nav-link" data-page="chatbot">🤖 AI Study Chat</button>
+            <button class="nav-link" data-page="notes">📝 Notes Summarizer</button>
+            <button class="nav-link" data-page="quiz">❓ Quiz Generator</button>
+            <button class="nav-link" data-page="progress">📊 Progress Tracker</button>
+            <button class="nav-link" data-page="reminders">⏰ Reminders</button>
+        </nav>
 
-        <main class="main-content">
-            <header class="topbar">
+        <div class="sidebar-footer">Learn smarter, not harder! ✨</div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div>
+                <p class="eyebrow">YOUR PERSONAL STUDY COMPANION</p>
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+            <span class="header-pill">✨ Keep learning</span>
+        </header>
+
+        <!-- 1. DASHBOARD -->
+        <section class="page-section" id="dashboard-page">
+            <div class="welcome-section">
                 <div>
-                    <h1 id="page-title">Good to see you! 👋</h1>
-                    <p>Plan your learning, stay organized, and achieve your goals.</p>
+                    <p class="eyebrow light">WELCOME TO STUDYMATE AI</p>
+                    <h2>Make today a productive one! 👋</h2>
+                    <p>Organize your studies, ask questions, and track your progress in one place.</p>
+                    <button class="button button-light" data-page="planner">Plan my study day →</button>
                 </div>
-            </header>
+                <div class="welcome-emoji">📚</div>
+            </div>
 
-            <section class="welcome-panel">
-                <div>
-                    <p class="welcome-label">YOUR PERSONAL STUDY ASSISTANT</p>
-                    <h2>Welcome to StudyMate AI!</h2>
-                    <p>Make every study session count. One task at a time.</p>
-                </div>
-                <div class="welcome-icon">🎓</div>
-            </section>
-
-            <section class="stats-grid">
+            <div class="stats-container">
                 <article class="stat-card">
-                    <div class="stat-icon purple">📚</div>
-                    <h3>Total Tasks</h3>
-                    <p id="total-tasks">0</p>
+                    <div class="stat-icon">📋</div>
+                    <div><p>Total Tasks</p><h2 id="total-tasks">0</h2></div>
                 </article>
-
                 <article class="stat-card">
-                    <div class="stat-icon green">✓</div>
-                    <h3>Completed Tasks</h3>
-                    <p id="completed-tasks">0</p>
+                    <div class="stat-icon">✅</div>
+                    <div><p>Completed Tasks</p><h2 id="completed-tasks">0</h2></div>
                 </article>
-
                 <article class="stat-card">
-                    <div class="stat-icon orange">📈</div>
-                    <h3>Completion Rate</h3>
-                    <p id="completion-rate">0%</p>
+                    <div class="stat-icon">📈</div>
+                    <div><p>Completion Rate</p><h2 id="completion-rate">0%</h2></div>
                 </article>
-            </section>
+            </div>
 
-            <section class="bottom-grid">
-                <article class="panel" id="planner-panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h2>Today's Study Tasks</h2>
-                            <p class="panel-subtitle">Organize your learning schedule</p>
-                        </div>
-                        <span class="heading-icon">📝</span>
+            <div class="content-grid">
+                <section class="panel">
+                    <div class="panel-header">
+                        <div><h2>📅 Study Planner</h2><p>Add tasks and manage deadlines.</p></div>
+                        <button class="text-button" data-page="planner">View all →</button>
                     </div>
 
-                    <form id="task-form" class="task-form">
+                    <form id="task-form">
                         <div class="form-group">
-                            <label for="task-title">Task Name <span>*</span></label>
-                            <input
-                                type="text"
-                                id="task-title"
-                                placeholder="e.g. Complete Python assignment"
-                                maxlength="150"
-                                required
-                            >
+                            <label for="task-title">Task name *</label>
+                            <input id="task-title" required maxlength="180" placeholder="e.g. Complete Python assignment">
                         </div>
-
-                        <div class="form-group">
-                            <label for="task-subject">Subject</label>
-                            <input
-                                type="text"
-                                id="task-subject"
-                                placeholder="e.g. Python Programming"
-                                maxlength="80"
-                            >
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="task-subject">Subject</label>
+                                <input id="task-subject" maxlength="80" placeholder="e.g. Python">
+                            </div>
+                            <div class="form-group">
+                                <label for="task-due-date">Due date</label>
+                                <input id="task-due-date" type="date">
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="task-due-date">Due Date</label>
-                            <input type="date" id="task-due-date">
-                        </div>
-
-                        <button type="submit" id="add-task-btn" class="primary-button">
-                            <span>＋</span> Add Task
-                        </button>
-
-                        <p id="form-message" aria-live="polite"></p>
+                        <button type="submit" class="button">+ Add task</button>
+                        <p id="form-message" class="status-message" role="status"></p>
                     </form>
 
-                    <div class="task-list-heading">
-                        <h3>Your Task List</h3>
-                        <span id="task-count-label">0 tasks</span>
+                    <div class="task-section">
+                        <h3>Your tasks</h3>
+                        <div id="task-list" class="task-list"></div>
                     </div>
+                </section>
 
-                    <div id="task-list">
-                        <p class="empty">No tasks yet. Add your first task!</p>
-                    </div>
-                </article>
-
-                <article class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h2>Quick Actions</h2>
-                            <p class="panel-subtitle">Your study tools in one place</p>
-                        </div>
-                        <span class="heading-icon">⚡</span>
-                    </div>
-
+                <section class="panel">
+                    <div class="panel-header"><div><h2>⚡ Quick Actions</h2><p>Choose a tool to get started.</p></div></div>
                     <div class="quick-actions">
-                        <button class="quick-action" data-page="planner">
-                            <span class="quick-icon purple">📅</span>
-                            <span class="quick-text">
-                                <strong>Add a study task</strong>
-                                <small>Plan your next task</small>
-                            </span>
-                            <span class="arrow">›</span>
-                        </button>
-
-                        <button class="quick-action" data-page="chatbot">
-                            <span class="quick-icon blue">🤖</span>
-                            <span class="quick-text">
-                                <strong>Ask AI a question</strong>
-                                <small>Get help with studying</small>
-                            </span>
-                            <span class="arrow">›</span>
-                        </button>
-
-                        <button class="quick-action" data-page="notes">
-                            <span class="quick-icon orange">📝</span>
-                            <span class="quick-text">
-                                <strong>Summarize notes</strong>
-                                <small>Review key concepts</small>
-                            </span>
-                            <span class="arrow">›</span>
-                        </button>
-
-                        <button class="quick-action" data-page="quiz">
-                            <span class="quick-icon green">🧠</span>
-                            <span class="quick-text">
-                                <strong>Generate a quiz</strong>
-                                <small>Practice what you learn</small>
-                            </span>
-                            <span class="arrow">›</span>
-                        </button>
+                        <button class="quick-action" data-page="chatbot">🤖 <span><strong>AI Study Chat</strong><small>Ask study questions</small></span>→</button>
+                        <button class="quick-action" data-page="notes">📝 <span><strong>Notes Summarizer</strong><small>Make revision notes</small></span>→</button>
+                        <button class="quick-action" data-page="quiz">❓ <span><strong>Quiz Generator</strong><small>Practice a topic</small></span>→</button>
+                        <button class="quick-action" data-page="progress">📊 <span><strong>Progress Tracker</strong><small>Review your progress</small></span>→</button>
+                        <button class="quick-action" data-page="reminders">⏰ <span><strong>Reminders</strong><small>Remember deadlines</small></span>→</button>
                     </div>
-
                     <div class="tip-card">
                         <span>💡</span>
-                        <div>
-                            <h3>Study tip</h3>
-                            <p>Break big assignments into smaller tasks. Small steps make progress easier to track.</p>
-                        </div>
+                        <div><strong>Study tip</strong><p>Break large assignments into smaller tasks and review your progress regularly.</p></div>
                     </div>
-                </article>
+                </section>
+            </div>
+        </section>
+
+        <!-- 2. STUDY PLANNER -->
+        <section class="page-section" id="planner-page" hidden>
+            <div class="page-intro"><span class="feature-icon">📅</span><div><h2>Study Planner</h2><p>Organize your work and deadlines.</p></div></div>
+            <section class="panel">
+                <h3>Add a study task</h3>
+                <form id="planner-task-form">
+                    <div class="form-group"><label for="planner-task-title">Task name *</label><input id="planner-task-title" required maxlength="180" placeholder="What do you need to do?"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="planner-task-subject">Subject</label><input id="planner-task-subject" maxlength="80" placeholder="Subject"></div>
+                        <div class="form-group"><label for="planner-task-date">Due date</label><input id="planner-task-date" type="date"></div>
+                    </div>
+                    <button class="button" type="submit">Add to planner</button>
+                    <p id="planner-message" class="status-message" role="status"></p>
+                </form>
             </section>
+            <section class="panel"><h3>All study tasks</h3><div id="planner-task-list" class="task-list"></div></section>
+        </section>
 
-            <footer class="footer">
-                <p>StudyMate AI · Learn smarter, one task at a time ✨</p>
-            </footer>
-        </main>
-    </div>
+        <!-- 3. AI STUDY CHAT -->
+        <section class="page-section" id="chatbot-page" hidden>
+            <div class="page-intro"><span class="feature-icon">🤖</span><div><h2>AI Study Chat</h2><p>Ask questions and learn step by step with Gemini.</p></div></div>
+            <section class="panel">
+                <div id="chat-messages" class="chat-messages" aria-live="polite">
+                    <div class="chat-message bot-message"><strong>StudyMate AI</strong><p>Hi! 👋 What would you like to learn today?</p></div>
+                </div>
+                <form id="chat-form" class="chat-form">
+                    <input id="chat-input" maxlength="6000" required autocomplete="off" aria-label="Your question" placeholder="Ask a study question...">
+                    <button id="chat-send" class="button" type="submit">Send ↑</button>
+                </form>
+                <p id="chat-status" class="status-message" role="status"></p>
+                <p class="helper-text">AI can make mistakes. Verify important information with your study materials.</p>
+            </section>
+        </section>
 
-    <script src="script.js"></script>
+        <!-- 4. NOTES SUMMARIZER -->
+        <section class="page-section" id="notes-page" hidden>
+            <div class="page-intro"><span class="feature-icon">📝</span><div><h2>Notes Summarizer</h2><p>Turn long notes into concise revision points.</p></div></div>
+            <section class="panel">
+                <form id="notes-form">
+                    <div class="form-group">
+                        <label for="notes-input">Paste your study notes</label>
+                        <textarea id="notes-input" rows="12" maxlength="20000" required placeholder="Paste your notes here..."></textarea>
+                    </div>
+                    <button id="summarize-button" class="button" type="submit">Summarize notes ✨</button>
+                </form>
+                <p id="notes-status" class="status-message" role="status"></p>
+                <div id="summary-result" class="generated-result" hidden>
+                    <div class="result-heading"><h3>Revision summary</h3><button id="copy-summary" class="button button-outline" type="button">Copy summary</button></div>
+                    <div id="summary-text" class="result-text"></div>
+                </div>
+            </section>
+        </section>
+
+        <!-- 5. QUIZ GENERATOR -->
+        <section class="page-section" id="quiz-page" hidden>
+            <div class="page-intro"><span class="feature-icon">❓</span><div><h2>Quiz Generator</h2><p>Create practice questions from a topic or your notes.</p></div></div>
+            <section class="panel">
+                <form id="quiz-form">
+                    <div class="form-group"><label for="quiz-topic">Topic or subject</label><input id="quiz-topic" maxlength="500" placeholder="e.g. Python lists and tuples"></div>
+                    <div class="form-group"><label for="quiz-source">Optional: paste your notes</label><textarea id="quiz-source" rows="6" maxlength="12000" placeholder="Paste notes here..."></textarea></div>
+                    <div class="form-group compact-field"><label for="quiz-count">Number of questions</label><select id="quiz-count"><option value="3">3 questions</option><option value="5" selected>5 questions</option><option value="10">10 questions</option></select></div>
+                    <button id="quiz-button" class="button" type="submit">Generate quiz ✨</button>
+                </form>
+                <p id="quiz-status" class="status-message" role="status"></p>
+                <div id="quiz-result" class="generated-result" hidden>
+                    <div class="result-heading"><h3>Your practice quiz</h3><button id="copy-quiz" class="button button-outline" type="button">Copy quiz</button></div>
+                    <div id="quiz-text" class="result-text"></div>
+                </div>
+            </section>
+        </section>
+
+        <!-- 6. PROGRESS TRACKER -->
+        <section class="page-section" id="progress-page" hidden>
+            <div class="page-intro"><span class="feature-icon">📊</span><div><h2>Progress Tracker</h2><p>Track your tasks and subject progress.</p></div></div>
+            <div class="stats-container">
+                <article class="stat-card"><div class="stat-icon">📋</div><div><p>Total tasks</p><h2 id="progress-total">0</h2></div></article>
+                <article class="stat-card"><div class="stat-icon">✅</div><div><p>Completed</p><h2 id="progress-completed">0</h2></div></article>
+                <article class="stat-card"><div class="stat-icon">🎯</div><div><p>Remaining</p><h2 id="progress-remaining">0</h2></div></article>
+            </div>
+            <section class="panel">
+                <div class="panel-header"><div><h3>Overall completion</h3><p id="progress-caption">Add tasks to start tracking.</p></div><strong id="progress-percent">0%</strong></div>
+                <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+            </section>
+            <section class="panel"><h3>Subject breakdown</h3><div id="subject-breakdown" class="breakdown-list"></div></section>
+            <section class="panel"><h3>Tasks</h3><div id="progress-task-list" class="task-list"></div></section>
+        </section>
+
+        <!-- 7. STUDY REMINDERS -->
+        <section class="page-section" id="reminders-page" hidden>
+            <div class="page-intro"><span class="feature-icon">⏰</span><div><h2>Study Reminders</h2><p>Schedule study sessions and important deadlines.</p></div></div>
+            <section class="panel">
+                <h3>Create a reminder</h3>
+                <form id="reminder-form">
+                    <div class="form-group"><label for="reminder-title">Reminder</label><input id="reminder-title" required maxlength="180" placeholder="e.g. Revise database concepts"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="reminder-date">Date</label><input id="reminder-date" type="date" required></div>
+                        <div class="form-group"><label for="reminder-time">Time</label><input id="reminder-time" type="time" required></div>
+                    </div>
+                    <button class="button" type="submit">Save reminder</button>
+                    <p id="reminder-status" class="status-message" role="status"></p>
+                </form>
+                <div class="notification-note">
+                    <strong>🔔 Browser notifications</strong>
+                    <p>Allow notifications when asked. Keep this page open for reminders to be checked.</p>
+                    <button id="enable-notifications" class="button button-outline" type="button">Enable notifications</button>
+                </div>
+            </section>
+            <section class="panel"><h3>Your reminders</h3><div id="reminder-list" class="reminder-list"></div></section>
+        </section>
+
+        <footer class="main-footer">© 2026 StudyMate AI · Your personal study companion 💜</footer>
+    </main>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
