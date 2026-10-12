@@ -27,31 +27,82 @@ function renderTasks() {
             saveTasks();
         });
 
+        const details = document.createElement("div");
+        details.className = "task-details";
+
         const label = document.createElement("label");
         label.textContent = task.title;
+
+        details.appendChild(label);
+
+        if (task.subject) {
+            const subject = document.createElement("small");
+            subject.textContent = "Subject: " + task.subject;
+            details.appendChild(subject);
+        }
+
+        if (task.dueDate) {
+            const date = document.createElement("small");
+            date.textContent = "Due: " + task.dueDate;
+            details.appendChild(date);
+        }
 
         const remove = document.createElement("button");
         remove.className = "delete-btn";
         remove.textContent = "Delete";
+
         remove.addEventListener("click", () => {
             tasks.splice(index, 1);
             saveTasks();
         });
 
-        row.append(checkbox, label, remove);
+        row.append(checkbox, details, remove);
         taskList.appendChild(row);
     });
 
     const completed = tasks.filter(task => task.done).length;
+
     document.getElementById("total-tasks").textContent = tasks.length;
     document.getElementById("completed-tasks").textContent = completed;
+
     document.getElementById("completion-rate").textContent =
-        tasks.length ? Math.round(completed / tasks.length * 100) + "%" : "0%";
+        tasks.length
+            ? Math.round(completed / tasks.length * 100) + "%"
+            : "0%";
 }
 
 function saveTasks() {
     localStorage.setItem("studyTasks", JSON.stringify(tasks));
     renderTasks();
+}
+
+function addTask() {
+    const title = prompt("Enter your study task:");
+
+    if (!title || !title.trim()) {
+        return;
+    }
+
+    const subject = prompt("Enter the subject name:");
+
+    if (subject === null) {
+        return;
+    }
+
+    const dueDate = prompt("Enter the due date (YYYY-MM-DD), or leave blank:");
+
+    if (dueDate === null) {
+        return;
+    }
+
+    tasks.push({
+        title: title.trim(),
+        subject: subject.trim(),
+        dueDate: dueDate.trim(),
+        done: false
+    });
+
+    saveTasks();
 }
 
 function openPage(page) {
@@ -72,22 +123,20 @@ function openPage(page) {
     });
 
     if (page === "planner") {
-        const title = prompt("Enter your study task:");
-        if (title && title.trim()) {
-            tasks.push({ title: title.trim(), done: false });
-            saveTasks();
-        }
+        addTask();
     } else if (page !== "dashboard") {
         alert("This feature will be developed in our next steps!");
     }
 }
 
 navButtons.forEach(button => {
-    button.addEventListener("click", () => openPage(button.dataset.page));
+    button.addEventListener("click", () => {
+        openPage(button.dataset.page);
+    });
 });
 
 document.getElementById("start-btn").addEventListener("click", () => {
-    openPage("planner");
+    addTask();
 });
 
 renderTasks();
