@@ -42,3 +42,8 @@ Keep the backend running while using the AI features.
 ## Security
 
 Never commit your API key or `.env` file. Browser storage is local to the browser and is not a cloud database. Before public deployment, configure production hosting, restrict CORS, and add suitable authentication and rate limiting.
+## Deployment Links
+
+- **StudyMate AI Backend:** https://studymate-ai-backend-3fnb.onrender.com/
+- **Backend Health Check:** https://studymate-ai-backend-3fnb.onrender.com/api/health
+
